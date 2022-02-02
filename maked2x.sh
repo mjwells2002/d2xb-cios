@@ -20,21 +20,21 @@ replace_vars() {
 # Build or clean library, plugins and modules
 make_modules() {
         do_make cios-lib     ""                ${CLEAN}
-        do_make dip-plugin   ${D2XBUILD}/DIPP  ${CLEAN}
-        do_make ehci-module  ${D2XBUILD}/EHCI  ${CLEAN}
-        do_make es-plugin    ${D2XBUILD}/ES    ${CLEAN}
-        do_make fat-module   ${D2XBUILD}/FAT   ${CLEAN}
-        do_make ffs-plugin   ${D2XBUILD}/FFSP  ${CLEAN}
-        do_make mload-module ${D2XBUILD}/MLOAD ${CLEAN}
-        do_make sdhc-module  ${D2XBUILD}/SDHC  ${CLEAN}
-        do_make usb-module   ${D2XBUILD}/USBS  ${CLEAN}
+        do_make dip-plugin   ${d2xbBUILD}/DIPP  ${CLEAN}
+        do_make ehci-module  ${d2xbBUILD}/EHCI  ${CLEAN}
+        do_make es-plugin    ${d2xbBUILD}/ES    ${CLEAN}
+        do_make fat-module   ${d2xbBUILD}/FAT   ${CLEAN}
+        do_make ffs-plugin   ${d2xbBUILD}/FFSP  ${CLEAN}
+        do_make mload-module ${d2xbBUILD}/MLOAD ${CLEAN}
+        do_make sdhc-module  ${d2xbBUILD}/SDHC  ${CLEAN}
+        do_make usb-module   ${d2xbBUILD}/USBS  ${CLEAN}
 
         [ "${CLEAN}" == "clean" ] && completed
 
         # Replace variables in some files
         replace_vars ciosmaps.xml      build
         replace_vars ciosmaps-vWii.xml build
-        replace_vars d2x-beta.bat      build/${D2XBUILD}
+        replace_vars d2xb-beta.bat      build/${d2xbBUILD}
         replace_vars ReadMe.txt        build
 
 
@@ -47,17 +47,17 @@ make_modules() {
         echo -n Creating distribution package...
 
         # Copy files to ModMii
-        [ -d "dist/Support/d2x-beta" ] && rm -rf dist/Support/d2x-beta
-        mkdir -p dist/Support/d2x-beta
-        cp build/${D2XBUILD}/*     dist/Support/d2x-beta
-        cp build/ciosmaps.xml      dist/Support/d2x-beta
-        cp build/ciosmaps-vWii.xml dist/Support/d2x-beta
-        cp build/ReadMe.txt        dist/Support/d2x-beta
-        cp build/Changelog.txt     dist/Support/d2x-beta
+        [ -d "dist/Support/d2xb-beta" ] && rm -rf dist/Support/d2xb-beta
+        mkdir -p dist/Support/d2xb-beta
+        cp build/${d2xbBUILD}/*     dist/Support/d2xb-beta
+        cp build/ciosmaps.xml      dist/Support/d2xb-beta
+        cp build/ciosmaps-vWii.xml dist/Support/d2xb-beta
+        cp build/ReadMe.txt        dist/Support/d2xb-beta
+        cp build/Changelog.txt     dist/Support/d2xb-beta
 
         echo done
         echo
-        echo "The files are copied to the directory dist/Support/d2x-beta. From there"
+        echo "The files are copied to the directory dist/Support/d2xb-beta. From there"
         echo "you need to copy/move the Support directory into the ModMii directory."
         echo
         echo "You need to invoke ModMii yourself, on a Windows installation :|"
@@ -98,7 +98,7 @@ completed() {
 menu() {
         echo
         echo "Usage 1: $0 [<major_version> [<minor_version> [dist | DIST]]]"
-        echo "  It builds d2x with the specified major and minor version."
+        echo "  It builds d2xb with the specified major and minor version."
         echo "  Default values are \"999\" and \"unknown\" respectively."
         echo "  If option dist or DIST is specified then a zip file is generated, i.e. the"
         echo "  distribution package. Be aware that:"
@@ -151,11 +151,11 @@ if [ ! -z "${DIST}" ] && [ "${DIST}" != "dist" ]; then
 
 fi
 
-export D2XBUILD=d2x-v${MAJOR_VERSION}-${MINOR_VERSION}
+export d2xbBUILD=d2xb-v${MAJOR_VERSION}-${MINOR_VERSION}
 
 echo -----------------------------
-echo Building ${D2XBUILD}
+echo Building ${d2xbBUILD}
 echo -----------------------------
 
-[ ! -d "build/${D2XBUILD}" ] && mkdir -p "build/${D2XBUILD}"
+[ ! -d "build/${d2xbBUILD}" ] && mkdir -p "build/${d2xbBUILD}"
 make_modules

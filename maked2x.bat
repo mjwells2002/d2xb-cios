@@ -39,12 +39,12 @@ goto :usage
 
 
 :valid_args
-set "d2x_build=d2x-v%major_ver%-%minor_ver%"
+set "d2xb_build=d2xb-v%major_ver%-%minor_ver%"
 
 echo -----------------------------
-echo Building %d2x_build%
+echo Building %d2xb_build%
 echo -----------------------------
-if not exist "%~dp0\build\%d2x_build%" md "%~dp0\build\%d2x_build%"
+if not exist "%~dp0\build\%d2xb_build%" md "%~dp0\build\%d2xb_build%"
 goto :make_modules
 
 :make_clean
@@ -56,21 +56,21 @@ if exist "%~dp0\dist"  rd /s /q "%~dp0\dist"
 :make_modules
 :: Build or clean library, plugins and modules
 call :make cios-lib     ""                %clean% 
-call :make dip-plugin   %d2x_build%\DIPP  %clean% 
-call :make ehci-module  %d2x_build%\EHCI  %clean% 
-call :make es-plugin    %d2x_build%\ES    %clean% 
-call :make fat-module   %d2x_build%\FAT   %clean% 
-call :make ffs-plugin   %d2x_build%\FFSP  %clean% 
-call :make mload-module %d2x_build%\MLOAD %clean% 
-call :make sdhc-module  %d2x_build%\SDHC  %clean% 
-call :make usb-module   %d2x_build%\USBS  %clean% 
+call :make dip-plugin   %d2xb_build%\DIPP  %clean% 
+call :make ehci-module  %d2xb_build%\EHCI  %clean% 
+call :make es-plugin    %d2xb_build%\ES    %clean% 
+call :make fat-module   %d2xb_build%\FAT   %clean% 
+call :make ffs-plugin   %d2xb_build%\FFSP  %clean% 
+call :make mload-module %d2xb_build%\MLOAD %clean% 
+call :make sdhc-module  %d2xb_build%\SDHC  %clean% 
+call :make usb-module   %d2xb_build%\USBS  %clean% 
 
 if "%clean%"=="clean" goto :done
 
 :: Replace variables in some files 
 call :replace_vars ciosmaps.xml      "build"
 call :replace_vars ciosmaps-vWii.xml "build"
-call :replace_vars d2x-beta.bat      "build\%d2x_build%"
+call :replace_vars d2xb-beta.bat      "build\%d2xb_build%"
 call :replace_vars ReadMe.txt        "build"
 
 :: Copy Changelog.txt to the build directory 
@@ -81,25 +81,25 @@ if "%dist%"=="" goto :done
 echo.
 echo Creating distribution package...
 :: Copy files to ModMii
-if exist "%MODMII%\Support\d2x-beta" rd /S /Q "%MODMII%\Support\d2x-beta"
-md "%MODMII%\Support\d2x-beta"
-copy "%~dp0\build\%d2x_build%\*.*"   "%MODMII%\Support\d2x-beta" > NUL
-copy "%~dp0\build\ciosmaps.xml"      "%MODMII%\Support\d2x-beta" > NUL
-copy "%~dp0\build\ciosmaps-vWii.xml" "%MODMII%\Support\d2x-beta" > NUL
-copy "%~dp0\build\ReadMe.txt"        "%MODMII%\Support\d2x-beta" > NUL
-copy "%~dp0\build\Changelog.txt"     "%MODMII%\Support\d2x-beta" > NUL
+if exist "%MODMII%\Support\d2xb-beta" rd /S /Q "%MODMII%\Support\d2xb-beta"
+md "%MODMII%\Support\d2xb-beta"
+copy "%~dp0\build\%d2xb_build%\*.*"   "%MODMII%\Support\d2xb-beta" > NUL
+copy "%~dp0\build\ciosmaps.xml"      "%MODMII%\Support\d2xb-beta" > NUL
+copy "%~dp0\build\ciosmaps-vWii.xml" "%MODMII%\Support\d2xb-beta" > NUL
+copy "%~dp0\build\ReadMe.txt"        "%MODMII%\Support\d2xb-beta" > NUL
+copy "%~dp0\build\Changelog.txt"     "%MODMII%\Support\d2xb-beta" > NUL
 :: Launch ModMii to build the wad files, calculate their md5 and generate the zip file
 cd /D "%MODMII%"
-start "d2x Distribution Process" /wait "%MODMII%\Support\d2x-beta-md5-updater.bat"
+start "d2xb Distribution Process" /wait "%MODMII%\Support\d2xb-beta-md5-updater.bat"
 :: Copy the generated files back to build and dist folders
-copy /Y "%MODMII%\Support\d2x-beta\d2x-beta.bat" "%~dp0\build\%d2x_build%\d2x-beta.bat" > NUL
+copy /Y "%MODMII%\Support\d2xb-beta\d2xb-beta.bat" "%~dp0\build\%d2xb_build%\d2xb-beta.bat" > NUL
 if not exist "%~dp0\dist" md "%~dp0\dist"
-copy /Y "%MODMII%\%d2x_build%.zip" "%~dp0\dist" > NUL
+copy /Y "%MODMII%\%d2xb_build%.zip" "%~dp0\dist" > NUL
 if "%dist%"=="DIST" goto :done
 :: Clean ModMii's files and folders  
-del "%MODMII%\%d2x_build%.zip" > NUL
-rd /S /Q "%MODMII%\Support\d2x-beta"
-rd /S /Q "%MODMII%\Support\More-cIOSs\%d2x_build%"
+del "%MODMII%\%d2xb_build%.zip" > NUL
+rd /S /Q "%MODMII%\Support\d2xb-beta"
+rd /S /Q "%MODMII%\Support\More-cIOSs\%d2xb_build%"
 
 :done
 echo.
@@ -116,7 +116,7 @@ goto :EOF
 :usage
 echo.
 echo Usage 1: %~n0 [^<major_version^> [^<minor_version^> [dist ^| DIST]]] 
-echo   It builds d2x with the specified major and minor version. 
+echo   It builds d2xb with the specified major and minor version. 
 echo   Default values are "999" and "unknown" respectively.
 echo   If option dist or DIST is specified then a zip file is generated, i.e. the
 echo   distribution package. Be aware that:
