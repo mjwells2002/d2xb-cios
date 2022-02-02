@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ciosmaps ciosgroupscount="1">
-	<ciosgroup name="d2x-v${MAJOR_VER}-${MINOR_VER}" version="${IOS_REV}" basescount="10">
+	<ciosgroup name="d2xb-v${MAJOR_VER}-${MINOR_VER}" version="${IOS_REV}" basescount="10">
 		<base ios="37" version="5662" contentscount="22" modulescount="7">
 			<content id="0x1f" patchscount="7">
 				<!-- cIOS signature fields -->
