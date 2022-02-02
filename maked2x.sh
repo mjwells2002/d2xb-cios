@@ -23,7 +23,7 @@ make_modules() {
         do_make dip-plugin   ${D2XBUILD}/DIPP  ${CLEAN}
         do_make ehci-module  ${D2XBUILD}/EHCI  ${CLEAN}
         do_make es-plugin    ${D2XBUILD}/ES    ${CLEAN}
-        do_make fat-plugin   ${D2XBUILD}/FAT   ${CLEAN}
+        do_make fat-module   ${D2XBUILD}/FAT   ${CLEAN}
         do_make ffs-plugin   ${D2XBUILD}/FFSP  ${CLEAN}
         do_make mload-module ${D2XBUILD}/MLOAD ${CLEAN}
         do_make sdhc-module  ${D2XBUILD}/SDHC  ${CLEAN}
@@ -68,7 +68,7 @@ do_make() {
         echo
         echo Making $1 $3...
         cd source/$1
-        make $3 STRIP=../stripios
+        make $3
         if [ $? != 0 ]; then
                 echo
                 echo Build failed!!!

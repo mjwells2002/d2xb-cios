@@ -7,7 +7,7 @@ PREFIX	=	$(DEVKITARM)/bin/arm-eabi-
 # Executables
 CC	=	$(PREFIX)gcc
 LD	=	$(PREFIX)gcc
-STRIP	=	../stripios
+STRIP	=	../../stripios
 
 # Flags
 ARCH	=	-mcpu=arm926ej-s -mthumb -mthumb-interwork -mbig-endian

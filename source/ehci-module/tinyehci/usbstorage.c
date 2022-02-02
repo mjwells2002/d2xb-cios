@@ -439,7 +439,7 @@ static s32 __cycle(usbstorage_handle *dev, u8 lun, u8 *buffer, u32 len, u8 *cb, 
 				continue;
 		}
 
-		retval = __read_csw(dev, &status, &dataResidue);
+		retval = write ? USBSTORAGE_OK : __read_csw(dev, &status, &dataResidue);
 
 		if(retval < 0)
 			continue;
