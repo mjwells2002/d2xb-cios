@@ -3,7 +3,9 @@
 /* linux kernel types needed by our code */
 #define __iomem
 
+/* Not sure why this was ever defined, it's never used like ever in the source tree :/
 typedef unsigned int uint32_t;
+*/
 
 #include "types.h"
 
