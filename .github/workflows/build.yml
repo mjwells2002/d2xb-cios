@@ -21,7 +21,16 @@ jobs:
         run: |
           find . -name "Makefile" -exec sed -i "s/arm-eabi/arm-none-eabi/g" {} +
 
-      - name: Build
+      - name: Build & zip
         run: |
           chmod +x maked2x.sh
           ./maked2x.sh
+          cd build
+          zip -9 -r d2xb-build.zip ciosmaps*xml d2xb-*/
+
+      - name: Upload build results.
+        uses: actions/upload-artifact@v2.3.1
+        with:
+          name: Zipped build results
+          path: |
+            build/d2xb-build.zip
