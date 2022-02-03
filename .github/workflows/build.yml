@@ -1,0 +1,27 @@
+name: Build with devkitARM
+
+on:
+  release:
+    type: [published]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    container:
+      image: docker://devkitpro/devkitarm:20220128
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.4.0
+
+      - name: FIXME Run temporary Makefile fixup for latest devkitarm
+        run: |
+          find . -name "Makefile" -exec sed -i "s/arm-eabi/arm-none-eabi/g" {} +
+
+      - name: Build
+        run: |
+          chmod +x maked2x.sh
+          ./maked2x.sh
