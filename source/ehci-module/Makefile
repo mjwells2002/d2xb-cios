@@ -26,8 +26,7 @@ OBJS	=	loop.o				\
 		start.o				\
 		tinyehci.o			\
 		usb_os.o			\
-		wbfs.o
-
+		wbfs.o				
 
 $(TARGET).elf: $(OBJS) $(LIBS)
 	@echo -e " LD\t$@"

@@ -1,0 +1,113 @@
+#include "debug.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "ipc.h"
+#include "mem.h"
+#include "syscalls.h"
+
+#define DEBUG_DEVICE "/dev/debug"
+#define THREAD_STACK_SIZE 1024
+
+void* buf;
+s32 qh;
+void* debug_exposed;
+int debug_signalChanged;
+ipcmessage *curread = NULL;
+s32 th;
+
+void startDebug(void)
+
+{
+    static u8 thread_stack[THREAD_STACK_SIZE] ATTRIBUTE_ALIGN(32);
+
+	s32 thread_id, priority;
+	
+	priority = os_thread_get_priority(os_get_thread_id()); 
+
+	thread_id = os_thread_create( (void *) threadEntry, NULL, &thread_stack[THREAD_STACK_SIZE], THREAD_STACK_SIZE, priority, 0);
+
+	if (thread_id >= 0)
+		os_thread_continue(thread_id);
+}
+
+void exposeData(void* inbuf, u32 len)
+{
+    if (inbuf != NULL)
+    {
+        memset(debug_exposed,0,EXPOSED_SIZE);
+        memcpy(debug_exposed,inbuf,len);
+        debug_signalChanged = 1;
+    }
+
+    if (curread != NULL)
+    {
+        if (debug_signalChanged == 1)
+        {
+            memcpy(curread->read.data,debug_exposed,EXPOSED_SIZE);
+            os_message_queue_ack(curread,0);
+            curread = NULL;
+            debug_signalChanged = 0;
+        }
+    }
+}
+
+void threadEntry(void)
+{
+    buf = Mem_Alloc(1024);
+    debug_exposed = Mem_Alloc(EXPOSED_SIZE);
+    debug_signalChanged = 0;
+
+    qh = os_message_queue_create(buf,32);
+
+    os_device_register(DEBUG_DEVICE,qh);
+
+    th = os_create_timer(100000, 100000, qh, 0);
+
+    ipcmessage *msg = NULL;
+    s32 ret;
+    s8 ack = 1;
+    for(;;)
+    {
+       	os_message_queue_receive(qh,(void *)&msg,0);
+
+        os_stop_timer(th);
+        
+        if(!msg)
+        {
+            exposeData(NULL,0);
+            os_restart_timer(th,100000,0);
+        
+        }
+        else
+        {
+            switch(msg->command)
+            {   
+                case IOS_OPEN:
+                    ret=0;
+                    ack = 1;
+                    break;
+                case IOS_CLOSE:
+                    ret=0;
+                    ack = 1;
+                    break;
+                case IOS_READ:
+                    ret = 0;
+                    ack = 0;
+                    if (curread == NULL)
+                        curread = msg;
+                    break;
+                default:
+                    ret=IPC_EINVAL;
+                    ack = 1;
+                    break;
+                
+            }
+            os_restart_timer(th,100000,0);
+            if (ack == 1)
+                os_message_queue_ack(msg, ret);
+            }
+    }
+}

@@ -5,20 +5,16 @@ ENTRY(_start)
 /* Sections area */ 
 MEMORY {
 	table		: ORIGIN = 0x0, LENGTH = 0x4000
-	exe(rwx)	: ORIGIN = 0x13780000, LENGTH = 0x4000
-	ram(rw)		: ORIGIN = 0x13784000, LENGTH = 0x28000
+	exe(rx)		: ORIGIN = 0x13970000, LENGTH = 0x4000
+	ram(rw)		: ORIGIN = 0x13974000, LENGTH = 0x28000
 }
 
-__exe_start_phys__		= 0x13780000;
-__ram_start_phys__		= 0x13784000;
-
- 
 SECTIONS {
 	.ios_info_table :  {
 		KEEP (*(.ios_info_table))
 	} > table
 
-	.init : AT (__exe_start_phys__) {
+	.init : {
 		*(.init)
 		. = ALIGN(4);
 	} > exe
@@ -33,7 +29,7 @@ SECTIONS {
 		. = ALIGN(4);
 	} > exe
 
-	.data : AT (__ram_start_phys__) {
+	.data : {
 		*(.data*)
 		*(.data.*)
 		*(.gnu.linkonce.d.*)
@@ -47,7 +43,7 @@ SECTIONS {
 		*(.rodata.*) 
 		*(.gnu.linkonce.r.*)
 		. = ALIGN(4);
-	} > ram
+	} > exe
 
 	.bss : {
 		*(.dynsbss)

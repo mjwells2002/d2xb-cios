@@ -1,7 +1,7 @@
 #!/bin/bash
 
 OLD_DIR=`pwd`
-
+STRIP=stripios
 # Set clean var, removes build and dist, and calls make_modules
 make_clean() {
         export CLEAN=clean

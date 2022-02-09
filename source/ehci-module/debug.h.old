@@ -1,0 +1,14 @@
+#ifndef __BRD_DEBUG__
+#define __BRD_DEBUG__
+
+#define EXPOSED_SIZE 32
+
+void startDebug(void);
+void threadEntry(void);
+void exposeData(void *inbuf, unsigned int len);
+
+extern void* debug_exposed; //exposed buffer
+extern int debug_signalChanged; //>=0 if changed
+
+
+#endif

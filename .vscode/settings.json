@@ -1,0 +1,18 @@
+{
+    "files.associations": {
+        "optional": "cpp",
+        "type_traits": "cpp",
+        "mem.h": "c",
+        "syscalls.h": "c",
+        "cstring": "cpp",
+        "variant": "cpp",
+        "debug.h": "c",
+        "istream": "cpp",
+        "ostream": "cpp",
+        "system_error": "cpp",
+        "*.inc": "cpp",
+        "*.rh": "cpp",
+        "types.h": "c",
+        "ehci_types.h": "c"
+    }
+}

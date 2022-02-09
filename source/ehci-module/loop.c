@@ -359,7 +359,6 @@ s32 EHCI_Loop(void)
 
 		/* Stop watchdog timer */
 		os_stop_timer(timerId);
-
 		/* Watchdog timer */
 		if (!message) {
 			/* Run watchdog */
@@ -380,7 +379,6 @@ s32 EHCI_Loop(void)
 				ret = IPC_ENOENT;
 				break;
 			}
-
 			/* Module device */
 			if (!strcmp(devpath, DEVICE)) {
 				/* Discover devices */

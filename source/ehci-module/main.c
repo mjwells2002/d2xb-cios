@@ -27,7 +27,6 @@
 #include "tinyehci.h"
 #include "types.h"
 
-
 char *moduleName = "EHCI";
 
 int main(void)
@@ -36,7 +35,6 @@ int main(void)
 	static u32 heapspace[0x5000] ATTRIBUTE_ALIGN(32);
 
 	s32 ret;
-
 	/* Print info */
 	svc_write("$IOSVersion: EHCI: " __DATE__ " " __TIME__ " 64M$\n");
 
@@ -45,16 +43,16 @@ int main(void)
 	if (ret < 0)
 		return ret;
 
+	
 	/* Initialize timer subsystem */
 	ret = Timer_Init();
 	if (ret < 0)
 		return ret;
-
+	
 	/* Initialize TinyEhci */
 	ret = EHCI_Init();
 	if (ret < 0)
 		return ret;
-
 	/* Main loop */
 	EHCI_Loop();
 
