@@ -1,4 +1,5 @@
 build/
+stripios
 *.o
 *.elf
 *.elf.orig

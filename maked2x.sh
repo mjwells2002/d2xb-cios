@@ -120,6 +120,13 @@ menu() {
         exit 0
 }
 
+if [[ ! -x "stripios" ]];
+then
+	echo "Attempting to compile stripios"
+	g++ stripios_src/stripios.cpp -o ./stripios
+	chmod +x stripios
+fi
+
 [ "$1" == "/?" ] && menu
 [ "$1" == "-h" ] && menu
 [ "$1" == "clean" ] && make_clean
