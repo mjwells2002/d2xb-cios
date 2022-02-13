@@ -21,6 +21,12 @@ jobs:
         run: |
           find . -name "Makefile" -exec sed -i "s/arm-eabi/arm-none-eabi/g" {} +
 
+      - name: Install C++ host compiler for stripios
+        run: |
+          echo "deb http://deb.debian.org/debian buster main" | sudo tee /etc/apt/sources.list
+          sudo apt update -y >/dev/null 2>&1
+          sudo apt install -y g++
+
       - name: Build & zip
         run: |
           chmod +x maked2x.sh
