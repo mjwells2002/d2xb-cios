@@ -370,4 +370,3 @@ unsigned long strip=0;
 
 	return result;
 }
-
