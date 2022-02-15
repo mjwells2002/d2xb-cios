@@ -123,8 +123,9 @@ menu() {
 if [[ ! -x "stripios" ]];
 then
 	echo "Attempting to compile stripios"
-	g++ stripios_src/stripios.cpp -o ./stripios
+	g++ -Wall -Wextra -Wshadow -Wstrict-aliasing -pedantic -std=c++17 -o ./stripios stripios_src/stripios.cpp || exit 1
 	chmod +x stripios
+	echo "Ok!"
 fi
 
 [ "$1" == "/?" ] && menu
