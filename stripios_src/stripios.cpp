@@ -115,9 +115,9 @@ unsigned long strip=0;
 	{
 	if(!strcmp(argv[3],"strip"))
 		{
-		 sscanf( argv[4], "%x",&strip );
+		 sscanf( argv[4], "%lx",&strip );
 
-		printf("strip: %x\n",strip);
+		printf("strip: %lx\n",strip);
 		}
 	else
 		{
@@ -318,7 +318,7 @@ unsigned long strip=0;
 		return 1;
 	}
 
-	if (fwrite(entries, sizeof(elfphentry), phnum+2, fout) != (phnum+2))
+	if (fwrite(entries, sizeof(elfphentry), phnum+2, fout) != (size_t)(phnum+2))
 	{
 		fprintf(stderr,"ERROR writing ELF program header\n");
 		return 1;
@@ -329,13 +329,13 @@ unsigned long strip=0;
 		elfphentry *p = &origentries[i];
 
 		unsigned long offset = getbe32(&p->offset);
-		unsigned long filesz = getbe32(&p->filesz);
+		filesz = getbe32(&p->filesz);
 
 		if (filesz)
 		{
 			fseek(fin, offset, SEEK_SET);
             
-			fprintf(stdout,"Writing segment 0x%08X to 0x%08X (%d bytes) - %x %s\n", getbe32(&p->vaddr), ftell(fout), filesz,getbe32(&p->memsz),
+			fprintf(stdout,"Writing segment 0x%08lX to 0x%08lX (%ld bytes) - %lx %s\n", getbe32(&p->vaddr), ftell(fout), filesz,getbe32(&p->memsz),
 				(strip==getbe32(&p->vaddr)  && strip!=0 )? "- Stripped" : "");
 
 			unsigned char* data = new unsigned char[filesz];
@@ -352,11 +352,10 @@ unsigned long strip=0;
 		}
 		else
 		{
-			fprintf(stdout,"Skipping segment 0x%08X\n", getbe32(&p->vaddr));
+			fprintf(stdout,"Skipping segment 0x%08lX\n", getbe32(&p->vaddr));
 		}
 	}
 
-cleanup:
 	if (offsetsizes)
 		delete[] offsetsizes;
 	if (entries)
